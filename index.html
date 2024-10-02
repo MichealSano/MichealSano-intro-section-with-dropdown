@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Intro section with dropdown navigation</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+    * {
+    font-family: "Epilogue", sans-serif;
+    padding: 0;
+    margin: 0;
+    --blue: rgb(59, 130, 246);
+    --purple: rgb(58, 237, 85);
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.desktop {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+a:hover {
+    color: purple;
+}
+
+    .logo {
+    width: 147px;
+}
+svg {
+    overflow: visible;
+}
+
+.arrow {
+    transition: transform .5s;
+}
+
+.arrow.flip {
+    transform: rotate(180deg);
+}
+
+.dark-cover {
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    transition: background .5s ease-out;
+    pointer-events: none;
+}
+
+.dark-cover.active {
+    pointer-events: inherit;
+    background-color: hsla(0, 0%, 0%, 35%);
+}
+
+nav {
+    margin: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* height: 10em; */
+}
+
+nav .first-half {
+    height: fit-content;
+    align-items: center;
+}
+
+nav a {
+    display: flex;
+    flex-grow: 0;
+    height: fit-content
+}
+
+.hamburger {
+    width: 40px;
+    height: 46px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.relative-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.close-button {
+    width: 37px;
+    height: 49px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+.nav-popup {
+    position: fixed;
+    right: -75vw;
+    top: 0;
+    width: 75vw;
+    max-width: 400px;
+    height: 100vh;
+    z-index: 2;
+    background-color: white;
+    transition: right .5s ease-in-out;
+}
+
+.nav-popup.active {
+    right: 0;
+}
+
+.nav-popup svg {
+    width: 2em;
+}
+
+ul {
+    list-style: none;
+}
+
+.list-menu {
+    padding: 7em 0 0 2em
+}
+
+.list-menu li ul {
+    margin: 0em 1em;
+    position: relative;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .5s ease-out;
+}
+
+.acc-list.features.active {
+    max-height: 12em;
+}
+
+.acc-list.company.active {
+    max-height: 7em;
+}
+
+.list-menu li li {
+    margin: .5em 0;
+}
+
+li a {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    text-decoration: none;
+    color: var(--gray);
+    transition: color .2s ease-in-out;
+}
+
+a:hover, .main-menu-button:hover {
+    color: var(--purple)
+}
+
+h2, .main-menu-button, .main-link-item {
+    font-size: 1.375rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color .2s ease-in-out;
+    color: var(--gray)
+}
+
+h1, .large-text {
+    font-size: 2.312rem
+}
+
+.highlight {
+    color: var(--purple)
+}
+
+.main-list-item {
+    margin: .5em 0;
+}
+
+.mobile-login-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.75rem;
+    position: absolute;
+    bottom: 3em;
+    left: 0;
+    width: 100%;
+    gap: .5em;
+}
+
+.mobile-login-register a {
+    text-decoration: none;
+    color: var(--black);
+}
+
+.mobile-login {
+    transition: color .3s;
+}
+
+.mobile-login:hover {
+    color: var(--purple);
+}
+
+.mobile-register, .link-button {
+    border: 2px solid var(--black);
+    padding: .5em 1.5em;
+    border-radius: .6em;
+    transition: background-color .3s, color .3s, border .3s;
+    color: var(--black);
+    text-decoration: none;
+}
+
+.mobile-register:hover, .link-button:hover {
+    background-color: var(--purple);
+    color: var(--white);
+    border: 2px solid var(--purple);
+}
+
+.mobile-hero-banner {
+    width: 100%
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100%
+}
+
+.hero {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.hero .first-half {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+}
+
+.hero p {
+    text-align: center;
+    width: 90%;
+}
+
+.hero h1 {
+    /* margin: .6em 0; */
+    /* text-align: center; */
+}
+
+.companies {
+    display: flex;
+    justify-content: space-around;
+    max-width: 500px;
+    width: 90%;
+    /* margin: 0 1em; */
+    /* flex-grow: 1; */
+}
+
+.companies li {
+    width: fit-content;
+}
+
+.companies img {
+    width: 80%;
+}
+
+.hero-first-half {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+ }
+
+
+@media (min-width: 1024px) {
+    .mobile {
+        display: none;
+    }
+
+    .desktop {
+        display: inline-block;
+    }
+
+    p, a, button {
+        font-size: 1.375rem;
+    }
+
+    .desktop-nav {
+        display: flex;
+        gap: 1em;
+    }
+
+    .desktop-nav button {
+        background: none;
+        border: none;
+        color: var(--gray);
+        transition: color .3s;
+    }
+
+    .desktop-nav button:hover {
+        color: var(--purple)
+    }
+
+    .desktop-nav button img {
+        width: .8em;
+    }
+
+    nav .first-half {
+        display: flex;
+        gap: 4em;
+    }
+
+    nav {
+        margin: 2em;
+    }
+
+    .login-section {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+    }
+
+    .login-section a {
+        color: var(--gray);
+        text-decoration: none;
+        transition: color .3s;
+    }
+
+    .login-section .sign-up-link {
+        color: var(--purple);
+        border: 2px solid var(--purple);
+        padding: .2em .7em;
+        border-radius: .3em;
+        transition: background .3s
+    }
+
+    .login-section .sign-up-link:hover {
+        background-color: var(--purple);
+        color: var(--white)
+    }
+
+    .login-section a:hover {
+        color: var(--purple)
+    }
+
+    .hover-button {
+        position: relative;
+    }
+
+    .hover-button .gap {
+        min-height: 1px;
+        display: inline-block;
+        pointer-events: none;
+    }
+
+    .menu-container {
+        position: absolute;
+        right: -1em;
+    }
+
+    .company-list {
+        width: 10em;
+        padding: 1.3em 1.5em;
+        flex-direction: column;
+        gap: 1em;
+        box-shadow: 0px 0px 27px -3px #000000;
+        border-radius: 1em;
+        background-color: var(--white);
+        display: none;
+    }
+
+    .company-hover-button:hover .company-list {
+        display: flex;
+    }
+
+    .company-hover-button:hover span {
+        display: inline-block;
+    }
+
+    .company-list svg {
+        width: 1em;
+    }
+
+    main {
+        flex-direction: row;
+        margin: 0 10% 3% 10%;
+        gap: 3em;
+        align-items: center;
+    }
+
+    .hero {
+        flex-grow: 0;
+    }
+
+    .desktop-hero-img {
+        flex-grow: 0;
+        height: fit-content;
+        max-width: 50%;
+        object-fit: cover;
+    }
+
+    h1, .large-text {
+        font-size: 3.5rem;
+        line-height: 55px;
+        text-align: left;
+    }
+
+    .hero {
+        justify-content: space-around;
+        height: 100%;
+        padding: 4em 0;
+        box-sizing: border-box;
+    }
+
+    .hero p {
+        text-align: left;
+    }
+    .hero-first-half {
+       display: flex;
+       flex-direction: column;
+       align-items: flex-start;
+       gap: 2em;
+    }
+    .companies {
+        width: 100%;
+    }
+    .hero .link-button {
+        align-self: flex-start;
+    }
+}
+    .desktop-hero-img {
+        max-width: 40%;
+    }
+    h1, .large-text {
+        font-size: 6rem;
+        line-height: 80px
+    }
+    .hero p {
+        max-width: 50ch;
+    }
+    .hero-first-half {
+        gap: 2.5em;
+    }
+    </style>
+    <body>
+      <span class="mobile dark-cover" id="dark-cover"></span>
+      <nav>
+        <div class="first-half">
+        <a href="#">
+        <img src="./images/logo.svg" alt="snap logo" class="logo">
+        </a>
+  
+    <ul class="desktop-nav desktop">
+   <li class="hover-button">
+   <div id="desktop-company-button" class="company-hover-button">
+   <button>
+   features
+   <img src="./images/icon-arrow-up.svg" alt="arrow">
+      </button>
+    <div class="menu-container">
+   <span class="gap"></span>
+   <ul id="desktop-company-list" class="company-list">
+      <li>
+      <a href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#7c3aec" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM112 192H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"></path></svg>
+       To-Do List
+      </a>
+       </li>
+         <li>
+       <a href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#3b82f6" d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"></path></svg>                   Calendar
+        </a>
+          </li>
+         <li>
+        <a href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#fde047" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"></path></svg>
+          Reminder
+           </a>
+          </li>
+           <li>
+           <a href="#">
+           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#d948ef" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+             Planning
+            </a>
+            </li>
+            </ul>
+            </div>
+                                  
+          </div>
+                              
+      </li>
+                          
+          <li class="hover-button">
+      <div id="desktop-company-button" class="company-hover-button">
+        <button>
+          Company
+         <img src="./images/icon-arrow-down.svg" alt="arrow">
+        </button>
+        <div class="menu-container">
+      <span class="gap"></span>
+      <ul id="desktop-features-list" class="company-list">
+     <li>
+    <a href="#">
+     History
+    </a>
+    </li>
+    <li>
+    <a href="#">
+      Our Team
+      </a>
+      </li>
+      <li>
+      <a href="#">
+      Blog
+       </a>
+       </li>
+       </ul>
+        </div>  
+      </div>
+     </li>
+     <li>
+      <a href="#">Careers</a>
+    </li>
+     <li>
+        <a href="#">About</a> 
+      </li>
+          </ul>
+  </div>
+                 
+    <div class="login-section desktop">
+     <a href="#" class="login-link">Login</a>
+     <a href="#" class="sign-up-link">Register</a>
+      </div>
+      <div class="mobile-nav mobile">
+        <button class="hamburger" id="hamburger">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path></svg>
+        </button>
+        <div class="nav-popup" id="nav-popup">
+    <div class="relative-container">
+   <button class="close-button" id="mobile-menu-close">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"></path></svg>
+     </button>
+     <ul class="list-menu">
+     <li class="main-list-item">
+       <button class="main-menu-button" id="features-button">
+          Features
+         <img id="features-arrow" class="arrow" src="./public/images/icon-arrow.svg" alt="arrow">
+       </button>
+       <ul class="acc-list features" id="features-list">
+         <li>
+         <a href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#7c3aec" d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM112 192H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"></path></svg>
+            To-Do List
+              </a>
+       </li>
+       <li>
+       <a href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#3b82f6" d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"></path></svg>
+      Calendar
+     </a>
+    </li>
+    <li>
+    <a href="#">
+     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#fde047" d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"></path></svg>
+       Reminder
+       </a>
+      </li>
+      <li>
+      <a href="#">
+     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="#d948ef" d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"></path></svg>
+      Planning
+    </a>
+    </li>
+    </ul>        
+    </li>
+    <li class="main-list-item">
+     <button class="main-menu-button" id="company-button">
+        Company
+      <img class="arrow" id="company-arrow" src="./public/images/icon-arrow.svg" alt="arrow">
+            </button>
+        <ul class="acc-list company" id="company-list">
+        <li>
+       <a href="#">
+         History
+          </a>
+          </li>
+       <li>
+      <a href="#">
+       Our Team
+    </a>
+     </li>
+       <li>
+    <a href="#">
+      Blog
+        </a>
+        <li>
+              </ul>
+      </li>
+                    <li class="main-list-item">
+                        <a class="main-link-item" href="#">
+                            Careers
+                        </a>
+                    </li>
+                    <li class="main-list-item">
+                        <a class="main-link-item" href="#">
+                            About
+                        </a>
+                    </li>
+                </ul>
+                <div class="mobile-login-register">
+                    <a href="#" class="mobile-login">Login</a>
+         <a href="#" class="mobile-register">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<main>
+<div class="hero">
+<div class="hero-first-half">
+    <img src="./public/images/image-hero-mobile.png" alt="mobile hero banner" class="mobile-hero-banner mobile">
+    <h1>Make remote <span class="highlight">work</span></h1>
+    <p>Get your team in sync, no matter your location. Streamline processes, create team rituals, and search productivity soar.</p>
+    <a href="#" class="link-button">Learn More!</a>
+</div>
+  
+</div>
+<img src="./images/image-hero-desktop.png" alt="desktop hero image" class="desktop desktop-hero-img">
+    
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Michealsano</a>.
+  </div>
+</body>
+</html>
